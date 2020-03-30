@@ -5,7 +5,7 @@ Write a multithreaded program that implements the banker's algorithm. Create n t
 # Solution
 Bankers_Algorithm.c
 
-Compile Manually
+COMPILE MANUALLY
 # compile
 gcc bankers_algorithm.c -std=c99 -pthread -o bankers_algorithm
 
