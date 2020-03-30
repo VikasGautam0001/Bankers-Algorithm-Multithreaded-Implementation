@@ -4,17 +4,10 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <time.h>
-
-
-
 pthread_mutex_t lockResources;
 pthread_cond_t condition;
-
-
 // Function declaration
-
 bool getSafeSeq();
-
 int nResources,
     nProcesses;
 int *resources;
@@ -33,7 +26,6 @@ void* processCode(void *arg) {
         while(p != safeSeq[nProcessRan])
                 pthread_cond_wait(&condition, &lockResources);
 
-	
         printf("\n--> Process %d", p+1);
         printf("\n\tAllocated : ");
         for(int i=0; i<nResources; i++)
@@ -51,14 +43,8 @@ void* processCode(void *arg) {
 
         printf("\tResource Allocated!");
         printf("\n"); sleep(1);
-        printf("\tProcess Code Running...");
-        printf("\n"); sleep(rand()%3 + 2);
-        printf("\tProcess Code Completed...");
-        printf("\n"); sleep(1);
-        printf("\tProcess Releasing Resource...");
-        printf("\n"); sleep(1);
-        printf("\tResource Released!");
-
+        printf("\tResource released!");
+        printf("\n");
 	for(int i=0; i<nResources; i++)
                 resources[i] += allocated[p][i];
 
@@ -77,19 +63,18 @@ void* processCode(void *arg) {
 }
 
 int main() {
-	srand(time(NULL));
-
+        srand(time(NULL));
         printf("\nNumber of processes? ");
         scanf("%d", &nProcesses);
-
         printf("\nNumber of resources? ");
         scanf("%d", &nResources);
 
         resources = (int *)malloc(nResources * sizeof(*resources));
-        printf("\nCurrently Available resources (R1 R2 ...)? ");
-        for(int i=0; i<nResources; i++)
-                scanf("%d", &resources[i]);
-
+        printf("\nCurrently Available resources :\n\n");
+        for(int i=0; i<nResources; i++){
+               printf(“Resource R%d :” , i+1); 
+    scanf("%d", &resources[i]);
+       }
         allocated = (int **)malloc(nProcesses * sizeof(*allocated));
         for(int i=0; i<nProcesses; i++)
                 allocated[i] = (int *)malloc(nResources * sizeof(**allocated));
@@ -100,16 +85,21 @@ int main() {
 
         printf("\n");
         for(int i=0; i<nProcesses; i++) {
-                printf("\nResource allocated to process %d (R1 R2 ...)? ", i+1);
-                for(int j=0; j<nResources; j++)
-                        scanf("%d", &allocated[i][j]);
+                printf("\nResource allocated to process %d : \n", i+1);
+                for(int j=0; j<nResources; j++){
+               	printf(“Resource R%d :”, j+1);
+           scanf("%d", &allocated[i][j]);
+
+}
         }
         printf("\n");
 
         for(int i=0; i<nProcesses; i++) {
-                printf("\nMaximum resource required by process %d (R1 R2 ...)? ", i+1);
-                for(int j=0; j<nResources; j++)
-                        scanf("%d", &maxRequired[i][j]);
+                printf("\nMaximum resource required by process %d  \n", i+1);
+                for(int j=0; j<nResources; j++){
+           		printf(“Resource R%d :”, j+1);   
+          scanf("%d", &maxRequired[i][j]);
+   }
         }
         printf("\n");
 
@@ -127,7 +117,7 @@ int main() {
         for(int i=0; i<nProcesses; i++) safeSeq[i] = -1;
 
         if(!getSafeSeq()) {
-                printf("\nUnsafe State! The processes leads the system to a unsafe state.\n\n");
+                printf("\nThe processes leads the system to a unsafe state.\n\n");
                 exit(-1);
         }
 
@@ -152,7 +142,7 @@ int main() {
         for(int i=0; i<nProcesses; i++)
                 pthread_join(processes[i], NULL);
 
-        printf("\nAll Processes Finished\n");
+        printf("\nAll Processes Completed\n");
 
         free(resources);
         for(int i=0; i<nProcesses; i++) {
@@ -164,13 +154,9 @@ int main() {
         free(maxRequired);
 	free(need);
         free(safeSeq);
-	
 	return 0;
 }
-
-
 bool getSafeSeq() {
-
         int tempRes[nResources];
         for(int i=0; i<nResources; i++) tempRes[i] = resources[i];
 
@@ -183,14 +169,11 @@ bool getSafeSeq() {
                 for(int i=0; i<nProcesses; i++) {
                         if(!finished[i]) {
                                 bool possible = true;
-
                                 for(int j=0; j<nResources; j++)
                                         if(need[i][j] > tempRes[j]) {
                                                 possible = false;
-                                                break;
-                                        }
-
-                                if(possible) {
+                                                break;}
+                              if(possible) {
                                         for(int j=0; j<nResources; j++)
                                                 tempRes[j] += allocated[i][j];
                                         safeSeq[nfinished] = i;
@@ -200,7 +183,6 @@ bool getSafeSeq() {
                                 }
                         }
                 }
-
                 if(!safe) {
                         for(int k=0; k<nProcesses; k++) safeSeq[k] = -1;
                         return false; 
@@ -208,6 +190,3 @@ bool getSafeSeq() {
         }
         return true; 
 }
-
-
-
