@@ -1,8 +1,8 @@
 Operating Systems
-Question
+# Question
 Write a multithreaded program that implements the banker's algorithm. Create n threads that request and release resources from the bank. The banker will grant the request only if it leaves the system in a safe state. It is important that shared data be safe from concurrent access. To ensure safe access to shared data, you can use mutex locks.
 
-Solution
+# Solution
 Bankers_Algorithm.c
 
 Compile Manually
@@ -12,7 +12,7 @@ gcc bankers_algorithm.c -std=c99 -pthread -o bankers_algorithm
 # execute
 ./bankers_algorithm
 
-Input
+# Input
 Number of processes? 5
 Number of resources? 3
 
@@ -29,7 +29,7 @@ Maximum resource required by process 2 (R1 R2 ...)? 3 2 2
 Maximum resource required by process 3 (R1 R2 ...)? 9 0 2
 Maximum resource required by process 4 (R1 R2 ...)? 2 2 2
 Maximum resource required by process 5 (R1 R2 ...)? 4 3 3
-Output
+# Output
 Safe Sequence Found : 2  4  5  1  3
 Executing Processes...
 
