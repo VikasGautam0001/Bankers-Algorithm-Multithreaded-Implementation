@@ -3,7 +3,7 @@ Operating Systems
 Write a multithreaded program that implements the banker's algorithm. Create n threads that request and release resources from the bank. The banker will grant the request only if it leaves the system in a safe state. It is important that shared data be safe from concurrent access. To ensure safe access to shared data, you can use mutex locks.
 
 # Solution
-Bankers_Algorithm.c
+https://github.com/VikasGautam0001/Bankers-Algorithm-Multithreaded-Implementation/blob/master/Algorithm.c
 
 COMPILE MANUALLY
 # compile
